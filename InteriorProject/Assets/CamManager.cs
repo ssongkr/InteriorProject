@@ -13,8 +13,12 @@ public class CamManager : MonoBehaviour {
     public const int THIRD_PERSON = 1;
 
     public int camMode;
-	
-	void Update () {
+
+    private void Start() {
+        camMode = FIRST_PERSON;
+    }
+
+    void Update () {
         if(Input.GetButtonDown ("Camera")) {
             if (camMode == 1) {
                 camMode = 0;
