@@ -7,7 +7,7 @@ public class BuildingSystem : MonoBehaviour {
     [SerializeField]
     private Camera playerCamera;
 
-    private bool buildModeOn = false;
+    public bool buildModeOn = false;
     private bool canBuild = false;
 
     private BlockSystem blockSystem;
@@ -27,7 +27,7 @@ public class BuildingSystem : MonoBehaviour {
     [SerializeField]
     private Material templateMaterial;
 
-    private int blockSelectCounter = 0;
+    public int blockSelectCounter = 0;
 
     private void Start() {
         blockSystem = GetComponent<BlockSystem>();
