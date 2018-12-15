@@ -368,6 +368,9 @@ MonoBehaviour:
   buildableSurfacesLayer:
     serializedVersion: 2
     m_Bits: 1536
+  removableSurfacesLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   blockTemplatePrefab: {fileID: 1667107885575680, guid: 374090c44217a4944bb4a550754cc891,
     type: 2}
   blockPrefab: {fileID: 1505327923119662, guid: f0d6e70ce38987c49a935ee76fecd843,
@@ -410,7 +413,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &879439074
 RectTransform:
   m_ObjectHideFlags: 0

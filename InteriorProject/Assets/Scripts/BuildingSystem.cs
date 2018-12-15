@@ -9,15 +9,19 @@ public class BuildingSystem : MonoBehaviour {
 
     private bool buildModeOn = false;
     private bool canBuild = false;
+    private bool canRemove = false;
 
     private BlockSystem blockSystem;
 
     [SerializeField]
     private LayerMask buildableSurfacesLayer;
+    [SerializeField]
+    private LayerMask removableSurfacesLayer;
 
     private Vector3 buildPos;
 
     private GameObject currentTemplateBlock;
+    private GameObject currentBlock;
 
     [SerializeField]
     private GameObject blockTemplatePrefab;
@@ -36,11 +40,7 @@ public class BuildingSystem : MonoBehaviour {
     private void Update() {
         if (Input.GetKeyDown("e")) {
             buildModeOn = !buildModeOn;
-            if (buildModeOn) {
-                Cursor.lockState = CursorLockMode.Locked;
-            } else {
-                Cursor.lockState = CursorLockMode.None;
-            }
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         if(Input.GetKeyDown("r")) {
@@ -55,8 +55,7 @@ public class BuildingSystem : MonoBehaviour {
             if (Physics.Raycast(playerCamera.ScreenPointToRay(
                     new Vector3(Screen.width / 2, Screen.height / 2, 0)), out buildPosHit, 10, buildableSurfacesLayer)) {
                 Vector3 point = buildPosHit.point;
-                buildPos = new Vector3(Mathf.Round(
-                    point.x), Mathf.Round(point.y), Mathf.Round(point.z));
+                buildPos = new Vector3(Mathf.Round(point.x), Mathf.Round(point.y), Mathf.Round(point.z));
                 canBuild = true;
             } else {
                 Destroy(currentTemplateBlock.gameObject);
@@ -80,6 +79,29 @@ public class BuildingSystem : MonoBehaviour {
                 PlaceBlock();
             }
         }
+
+        // remove 
+        if (!buildModeOn) {
+            RaycastHit buildPosHit;
+            if (Physics.Raycast(playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0)), out buildPosHit, 10, removableSurfacesLayer)) {
+                Vector3 point = buildPosHit.point;
+                buildPos = new Vector3(Mathf.Round(point.x), Mathf.Round(point.y), Mathf.Round(point.z));
+                canRemove = true;
+            } else {
+                canRemove = false;
+            }
+
+            if(canRemove) {
+                if (Input.GetMouseButtonDown(0)) {
+                    currentBlock = buildPosHit.collider.gameObject;
+                    RemoveBlock(currentBlock);
+                }
+            }
+        }
+
+
+
+
     }
 
     private void PlaceBlock() {
@@ -87,5 +109,10 @@ public class BuildingSystem : MonoBehaviour {
         Block tempBlock = blockSystem.allBlocks[blockSelectCounter];
         newBlock.name = tempBlock.blockName + "-Block";
         newBlock.GetComponent<MeshRenderer>().material = tempBlock.blockMaterial;
+    }
+
+    private void RemoveBlock(GameObject block) {
+        Debug.Log("Remove Block");
+        Destroy(block);
     }
 }
